@@ -2,8 +2,8 @@
 # un inicio y un fin, puede que el mismo
 # posea o no una recurrencia.
 class Evento
-  attr_reader :id, :nombre
-  attr_accessor :inicio, :fin, :recurrencia
+  attr_reader :id
+  attr_accessor :nombre, :inicio, :fin, :recurrencia
 
   def initialize(params)
     validar_parametros(params)

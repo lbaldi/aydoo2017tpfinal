@@ -206,8 +206,8 @@ describe 'Evento' do
       inicio: DateTime.now,
       fin: DateTime.now,
       recurrencia: {
-          frecuencia: 'diaria',
-          fin: DateTime.now
+        frecuencia: 'diaria',
+        fin: DateTime.now
       }
     }
     evento = Evento.new(datos_evento)
@@ -221,8 +221,8 @@ describe 'Evento' do
       inicio: DateTime.now,
       fin: DateTime.now,
       recurrencia: {
-          frecuencia: 'diaria',
-          fin: DateTime.now
+        frecuencia: 'diaria',
+        fin: DateTime.now
       }
     }
     evento = Evento.new(datos_evento)
@@ -236,8 +236,8 @@ describe 'Evento' do
       inicio: DateTime.now,
       fin: DateTime.now,
       recurrencia: {
-          frecuencia: 'diaria',
-          fin: DateTime.now
+        frecuencia: 'diaria',
+        fin: DateTime.now
       }
     }
     evento = Evento.new(datos_evento)
@@ -251,8 +251,8 @@ describe 'Evento' do
       inicio: DateTime.now,
       fin: DateTime.now,
       recurrencia: {
-          frecuencia: 'diaria',
-          fin: DateTime.now
+        frecuencia: 'diaria',
+        fin: DateTime.now
       }
     }
     evento = Evento.new(datos_evento)
@@ -266,11 +266,30 @@ describe 'Evento' do
       inicio: DateTime.now,
       fin: DateTime.now,
       recurrencia: {
-          frecuencia: 'diaria',
-          fin: DateTime.now
+        frecuencia: 'diaria',
+        fin: DateTime.now
       }
     }
     evento = Evento.new(datos_evento)
     expect(evento.recurrencia).to eq datos_evento[:recurrencia]
   end
+
+  it 'Error al editar id de un evento creado' do
+    datos_evento = {
+      id: 'id_1',
+      nombre: 'Evento_1',
+      inicio: DateTime.now,
+      fin: DateTime.now,
+      recurrencia: {
+        frecuencia: 'diaria',
+        fin: DateTime.now
+      }
+    }
+    evento = Evento.new(datos_evento)
+    expect { evento.id = 'nuevo id' }.to raise_error
+  end
+
+  # @TODO Agregar casos de prueba de modificacion de datos
+  # @TODO Agregar casos de prueba con modificaciones poniendo datos invalidos
+
 end

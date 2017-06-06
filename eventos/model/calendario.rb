@@ -1,6 +1,7 @@
 # Repositorio de eventos.
 class Calendario
   attr_reader :nombre
+  # @TODO Agregar listado de eventos y funciones para su uso
 
   def initialize(params)
     validar_parametros(params)

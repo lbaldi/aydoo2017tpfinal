@@ -40,4 +40,12 @@ describe 'Calendario' do
     }
     expect { Calendario.new(datos_calendario) }.to raise_error(TypeError)
   end
+
+  it 'Error al editar nombre de un calendario creado' do
+    datos_calendario = {
+      nombre: 'Calendario 1'
+    }
+    calendario = Calendario.new(datos_calendario)
+    expect { calendario.nombre = 'Nuevo Nombre' }.to raise_error
+  end
 end
