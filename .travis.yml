@@ -1,0 +1,4 @@
+script: "bash ./build_all.sh"
+language: ruby
+rvm:
+  - 2.2.0
