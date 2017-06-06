@@ -12,6 +12,27 @@ describe 'Evento' do
     Evento.new(datos_evento)
   end
 
+  it 'Crear un evento a partir de un id, nombre, inicio, fin y recurrencia nulo' do
+    datos_evento = {
+      id: 'id_1',
+      nombre: 'Evento_1',
+      inicio: DateTime.now,
+      fin: DateTime.now,
+      recurrencia: nil
+    }
+    Evento.new(datos_evento)
+  end
+
+  it 'Error al crear un evento sin parametros' do
+    datos_evento = nil
+    expect { Evento.new(datos_evento) }.to raise_error(TypeError)
+  end
+
+  it 'Error al crear un evento con formato invalido de parametros' do
+    datos_evento = 'Evento 1'
+    expect { Evento.new(datos_evento) }.to raise_error(TypeError)
+  end
+
   it 'Error al crear un evento sin id' do
     datos_evento = {
       nombre: 'Evento_1',
@@ -86,5 +107,95 @@ describe 'Evento' do
       fin: DateTime.now.to_s
     }
     expect { Evento.new(datos_evento) }.to raise_error(TypeError)
+  end
+
+  it 'Error al crear un evento con formato invalido de recurrencia' do
+    datos_evento = {
+      id: 'id_1',
+      nombre: 'Evento_1',
+      inicio: DateTime.now,
+      fin: DateTime.now,
+      recurrencia: 'recurrencia'
+    }
+    expect { Evento.new(datos_evento) }.to raise_error(TypeError)
+  end
+
+  it 'Error al crear un evento con recurrencia sin frecuencia ni fin' do
+    datos_evento = {
+      id: 'id_1',
+      nombre: 'Evento_1',
+      inicio: DateTime.now,
+      fin: DateTime.now,
+      recurrencia: {}
+    }
+    expect { Evento.new(datos_evento) }.to raise_error(TypeError)
+  end
+
+  it 'Error al crear un evento con recurrencia sin fin' do
+    datos_evento = {
+      id: 'id_1',
+      nombre: 'Evento_1',
+      inicio: DateTime.now,
+      fin: DateTime.now,
+      recurrencia: {
+        frecuencia: 'diaria'
+      }
+    }
+    expect { Evento.new(datos_evento) }.to raise_error(TypeError)
+  end
+
+  it 'Error al crear un evento con recurrencia con formato invalido de fin' do
+    datos_evento = {
+      id: 'id_1',
+      nombre: 'Evento_1',
+      inicio: DateTime.now,
+      fin: DateTime.now,
+      recurrencia: {
+        frecuencia: 'diaria',
+        fin: DateTime.now.to_s
+      }
+    }
+    expect { Evento.new(datos_evento) }.to raise_error(TypeError)
+  end
+
+  it 'Error al crear un evento con recurrencia sin frecuencia' do
+    datos_evento = {
+      id: 'id_1',
+      nombre: 'Evento_1',
+      inicio: DateTime.now,
+      fin: DateTime.now,
+      recurrencia: {
+        fin: DateTime.now
+      }
+    }
+    expect { Evento.new(datos_evento) }.to raise_error(TypeError)
+  end
+
+  it 'Error al crear un evento con recurrencia con formato invalido de fin' do
+    datos_evento = {
+      id: 'id_1',
+      nombre: 'Evento_1',
+      inicio: DateTime.now,
+      fin: DateTime.now,
+      recurrencia: {
+        frecuencia: nil,
+        fin: DateTime.now
+      }
+    }
+    expect { Evento.new(datos_evento) }.to raise_error(TypeError)
+  end
+
+  it 'Crear un evento con recurrencia' do
+    datos_evento = {
+      id: 'id_1',
+      nombre: 'Evento_1',
+      inicio: DateTime.now,
+      fin: DateTime.now,
+      recurrencia: {
+        frecuencia: 'diaria',
+        fin: DateTime.now
+      }
+    }
+    Evento.new(datos_evento)
   end
 end
