@@ -198,4 +198,79 @@ describe 'Evento' do
     }
     Evento.new(datos_evento)
   end
+
+  it 'El evento debe guardar el id con el cual se crea' do
+    datos_evento = {
+      id: 'id_1',
+      nombre: 'Evento_1',
+      inicio: DateTime.now,
+      fin: DateTime.now,
+      recurrencia: {
+          frecuencia: 'diaria',
+          fin: DateTime.now
+      }
+    }
+    evento = Evento.new(datos_evento)
+    expect(evento.id).to eq datos_evento[:id]
+  end
+
+  it 'El evento debe guardar el nombre con el cual se crea' do
+    datos_evento = {
+      id: 'id_1',
+      nombre: 'Evento_1',
+      inicio: DateTime.now,
+      fin: DateTime.now,
+      recurrencia: {
+          frecuencia: 'diaria',
+          fin: DateTime.now
+      }
+    }
+    evento = Evento.new(datos_evento)
+    expect(evento.nombre).to eq datos_evento[:nombre]
+  end
+
+  it 'El evento debe guardar el inicio con el cual se crea' do
+    datos_evento = {
+      id: 'id_1',
+      nombre: 'Evento_1',
+      inicio: DateTime.now,
+      fin: DateTime.now,
+      recurrencia: {
+          frecuencia: 'diaria',
+          fin: DateTime.now
+      }
+    }
+    evento = Evento.new(datos_evento)
+    expect(evento.inicio).to eq datos_evento[:inicio]
+  end
+
+  it 'El evento debe guardar el fin con el cual se crea' do
+    datos_evento = {
+      id: 'id_1',
+      nombre: 'Evento_1',
+      inicio: DateTime.now,
+      fin: DateTime.now,
+      recurrencia: {
+          frecuencia: 'diaria',
+          fin: DateTime.now
+      }
+    }
+    evento = Evento.new(datos_evento)
+    expect(evento.fin).to eq datos_evento[:fin]
+  end
+
+  it 'El evento debe guardar la recurrencia con el cual se crea' do
+    datos_evento = {
+      id: 'id_1',
+      nombre: 'Evento_1',
+      inicio: DateTime.now,
+      fin: DateTime.now,
+      recurrencia: {
+          frecuencia: 'diaria',
+          fin: DateTime.now
+      }
+    }
+    evento = Evento.new(datos_evento)
+    expect(evento.recurrencia).to eq datos_evento[:recurrencia]
+  end
 end
