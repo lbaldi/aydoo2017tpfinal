@@ -28,5 +28,4 @@ reports
 # YARD artifacts
 .yardoc
 _yardoc
-doc/
 .env
