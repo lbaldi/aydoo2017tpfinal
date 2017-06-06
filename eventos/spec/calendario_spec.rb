@@ -9,6 +9,14 @@ describe 'Calendario' do
     Calendario.new(datos_calendario)
   end
 
+  it 'El calendario deberia guardar el nombre con el cual se crea' do
+    datos_calendario = {
+      nombre: 'Calendario 1'
+    }
+    calendario = Calendario.new(datos_calendario)
+    expect(calendario.nombre).to eq datos_calendario[:nombre]
+  end
+
   it 'Error al crear un calendario sin parametros' do
     datos_calendario = nil
     expect { Calendario.new(datos_calendario) }.to raise_error(TypeError)
