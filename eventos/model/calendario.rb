@@ -1,7 +1,7 @@
-# Repositorio de eventos
+# Repositorio de eventos.
 class Calendario
-  def initialize(nombre)
-    raise TypeError unless nombre.is_a? String
-    @nombre = nombre
+  def initialize(params)
+    raise TypeError unless params[:nombre].is_a? String
+    @nombre = params[:nombre]
   end
 end

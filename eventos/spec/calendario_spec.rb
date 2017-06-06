@@ -3,14 +3,14 @@ require_relative '../model/calendario'
 
 describe 'Calendario' do
   it 'Crear un calendario a partir de un nombre' do
-    Calendario.new('Calendario 1')
+    Calendario.new(nombre: 'Calendario 1')
   end
 
   it 'Error al crear un calendario sin nombre' do
-    expect { Calendario.new(nil) }.to raise_error(TypeError)
+    expect { Calendario.new(otro_parametro: 'Calendario 1') }.to raise_error(TypeError)
   end
 
-  it 'Error al crear un calendario a partir de algo que no sea string' do
-    expect { Calendario.new(1) }.to raise_error(TypeError)
+  it 'Error al crear un calendario con un formato con un formato invalido de nombre' do
+    expect { Calendario.new(nombre: 1) }.to raise_error(TypeError)
   end
 end
