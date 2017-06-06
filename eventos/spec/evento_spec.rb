@@ -4,20 +4,19 @@ require_relative '../model/evento'
 describe 'Evento' do
   it 'Crear un evento a partir de un id, nombre, inicio y fin' do
     Evento.new(
-      'id_1',
-      'Evento_1',
-      DateTime.now,
-      DateTime.now
+      id: 'id_1',
+      nombre: 'Evento_1',
+      inicio: DateTime.now,
+      fin: DateTime.now
     )
   end
 
   it 'Error al crear un evento sin id' do
     expect do
       Evento.new(
-        nil,
-        'Evento_1',
-        DateTime.now,
-        DateTime.now
+        nombre: 'Evento_1',
+        inicio: DateTime.now,
+        fin: DateTime.now
       )
     end.to raise_error(TypeError)
   end
@@ -25,10 +24,10 @@ describe 'Evento' do
   it 'Error al crear un evento con formato invalido de id' do
     expect do
       Evento.new(
-          1,
-          'Evento_1',
-          DateTime.now,
-          DateTime.now
+        id: 1,
+        nombre: 'Evento_1',
+        inicio: DateTime.now,
+        fin: DateTime.now
       )
     end.to raise_error(TypeError)
   end
@@ -36,10 +35,9 @@ describe 'Evento' do
   it 'Error al crear un evento sin nombre' do
     expect do
       Evento.new(
-        'id_1',
-        nil,
-        DateTime.now,
-        DateTime.now
+        id: 'id_1',
+        inicio: DateTime.now,
+        fin: DateTime.now
       )
     end.to raise_error(TypeError)
   end
@@ -47,10 +45,10 @@ describe 'Evento' do
   it 'Error al crear un evento con formato invalido de nombre' do
     expect do
       Evento.new(
-          'id_1',
-          1,
-          DateTime.now,
-          DateTime.now
+        id: 'id_1',
+        nombre: 1,
+        inicio: DateTime.now,
+        fin: DateTime.now
       )
     end.to raise_error(TypeError)
   end
@@ -58,10 +56,9 @@ describe 'Evento' do
   it 'Error al crear un evento sin inicio' do
     expect do
       Evento.new(
-        'id_1',
-        'Evento_1',
-        nil,
-        DateTime.now
+        id: 'id_1',
+        nombre: 'Evento_1',
+        fin: DateTime.now
       )
     end.to raise_error(TypeError)
   end
@@ -69,10 +66,10 @@ describe 'Evento' do
   it 'Error al crear un evento con formato invalido de inicio' do
     expect do
       Evento.new(
-          'id_1',
-          'Evento_1',
-          DateTime.now.to_s,
-          DateTime.now
+        id: 'id_1',
+        nombre: 'Evento_1',
+        inicio: DateTime.now.to_s,
+        fin: DateTime.now
       )
     end.to raise_error(TypeError)
   end
@@ -80,10 +77,9 @@ describe 'Evento' do
   it 'Error al crear un evento sin fin' do
     expect do
       Evento.new(
-        'id_1',
-        'Evento_1',
-        DateTime.now,
-        nil
+        id: 'id_1',
+        nombre: 'Evento_1',
+        inicio: DateTime.now,
       )
     end.to raise_error(TypeError)
   end
@@ -91,10 +87,10 @@ describe 'Evento' do
   it 'Error al crear un evento con formato invalido de fin' do
     expect do
       Evento.new(
-          'id_1',
-          'Evento_1',
-          DateTime.now,
-          DateTime.now.to_s,
+        id: 'id_1',
+        nombre: 'Evento_1',
+        inicio: DateTime.now,
+        fin: DateTime.now.to_s
       )
     end.to raise_error(TypeError)
   end
