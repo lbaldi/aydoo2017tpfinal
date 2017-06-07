@@ -1,3 +1,7 @@
+require 'json'
+require_relative 'calendario'
+require_relative '../model/excepcion_unicidad_calendario'
+
 # Repositorio de calendarios
 class GestorDeCalendario
   attr_accessor :calendarios
@@ -13,7 +17,7 @@ class GestorDeCalendario
   end
 
   def comprobar_unicidad_calendario(nombre)
-    raise ExcepcionUnicidadEvento if @calendarios.key?(nombre)
+    raise ExcepcionUnicidadCalendario if @calendarios.key?(nombre)
   end
 
   def obtener_calendario(nombre)
@@ -24,4 +28,16 @@ class GestorDeCalendario
     @calendarios.delete(nombre)
   end
 
+  def write_file(path)
+    tempHash = JSON.dump @calendarios
+    File.open(path, "w") do |f|
+      f.write(tempHash)
+    end
+  end
+
+  def read_file(path)
+    f = File.read(path)
+    load = JSON.load f
+    @calendarios = load if load else {}
+  end
 end

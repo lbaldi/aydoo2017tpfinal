@@ -1,12 +1,20 @@
 require 'sinatra'
+require_relative 'model/gestor_de_calendario'
 require 'json'
+
+path = '/tmp/path.json'
+gestor = GestorDeCalendario.new
+gestor.read_file(path)
 
 post '/calendarios' do
   begin
     request.body.rewind
     data = JSON.parse request.body.read
-    # Implementacion
-    status 200
+    datos_calendario = {
+      nombre: data["nombre"]
+    }
+    gestor.crear_calendario(datos_calendario)
+    gestor.write_file(path)
   rescue Exception
     status 400
   end
@@ -28,10 +36,10 @@ get '/calendarios' do
   status 200
 end
 
-get '/calendarios' do
+get '/calendarios/:nombre' do
   begin
     nombre = params[:nombre]
-    # Implementacion
+    puts gestor.obtener_calendario(nombre)
     status 200
   rescue Exception
     # No encontrado
