@@ -1,8 +1,6 @@
 require 'sinatra'
 require 'json'
 
-$gestor_de_calendarios = Gestor_de_calendarios.new
-
 post '/calendarios' do
   begin
     request.body.rewind
