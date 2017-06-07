@@ -1,6 +1,8 @@
 require 'sinatra'
 require 'json'
 
+$gestor_de_calendarios = Gestor_de_calendarios.new
+
 post '/calendarios' do
   begin
     request.body.rewind
@@ -57,24 +59,20 @@ put '/eventos' do
   status 200
 end
 
-delete '/eventos/id' do
+delete '/eventos/:id' do
   id_evento = params[:id]
   # Implementacion
   status 200
 end
 
 get '/eventos' do
+  nombre_calendario = params[:calendario]
   # Implementacion
+  puts nombre_calendario
   status 200
 end
 
-get '/eventos' do
-  nombre_calendario = params[:nombre]
-  # Implementacion
-  status 200
-end
-
-get '/eventos/id' do
+get '/eventos/:id' do
   id_evento = params[:id]
   # Implementacion
   status 200
