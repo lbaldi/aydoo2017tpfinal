@@ -99,7 +99,7 @@ describe 'Calendario' do
     expect(calendario.obtener_evento(evento.id)).to eq evento
   end
 
-  it 'No deberia dar error al intentar eliminar un evento que no contiene' do
+  it 'No deberia dar error al intentar eliminar un evento que no existe en el calendario' do
     datos_calendario = {
         nombre: 'calendario 1'
     }
@@ -130,20 +130,12 @@ describe 'Calendario' do
     expect(calendario.eliminar_evento(evento.id)).to eq evento
   end
 
-  it 'No deberia poder obtener un evento que fue eliminado del calendario' do
+  it 'No deberia poder obtener un evento que fue no existe en el calendario' do
     datos_calendario = {
         nombre: 'calendario 1'
     }
-    datos_evento = {
-        id: 'id_1',
-        nombre: 'Evento_1',
-        inicio: DateTime.now,
-        fin: DateTime.now
-    }
     calendario = Calendario.new(datos_calendario)
-    evento = calendario.crear_evento(datos_evento)
-    calendario.eliminar_evento(evento.id)
-    expect(calendario.obtener_evento(evento.id)).to eq nil
+    expect(calendario.obtener_evento('un evento')).to eq nil
   end
 
 end

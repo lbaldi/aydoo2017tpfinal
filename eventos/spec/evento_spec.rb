@@ -289,7 +289,4 @@ describe 'Evento' do
     expect { evento.id = 'nuevo id' }.to raise_error
   end
 
-  # @TODO Agregar casos de prueba de modificacion de datos
-  # @TODO Agregar casos de prueba con modificaciones poniendo datos invalidos
-
 end
