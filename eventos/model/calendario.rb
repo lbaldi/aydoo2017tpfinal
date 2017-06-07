@@ -1,14 +1,12 @@
 # Repositorio de eventos.
 class Calendario
   attr_reader :nombre
-  #Repositorio de eventos para el calendario
   attr_accessor :eventos
-  # @TODO agregar funciones para su uso
 
   def initialize(params)
     validar_parametros(params)
     @nombre = params[:nombre]
-    @eventos = Array.new
+    @eventos = {}
   end
 
   def validar_parametros(params)
@@ -16,9 +14,21 @@ class Calendario
     raise TypeError unless params[:nombre].is_a? String
   end
 
-  def insertar_evento(params)
-  	raise TypeError unless params.is_a? Evento
-  	@eventos << params
+  def crear_evento(params)
+    evento = Evento.new(params)
+    comprobar_unicidad_evento(evento.id)
+    @eventos[evento.id] = evento
   end
 
+  def comprobar_unicidad_evento(id)
+    raise ExcepcionUnicidadEvento if @eventos.key?(id)
+  end
+
+  def obtener_evento(id)
+    @eventos[id]
+  end
+
+  def eliminar_evento(id)
+    @eventos.delete(id)
+  end
 end

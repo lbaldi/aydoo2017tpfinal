@@ -16,7 +16,6 @@ class Evento
 
   def validar_recurrencia(params)
     raise TypeError unless params.is_a? Hash
-    # @TODO Comprobar que el valor de frecuencia sea correcto.
     raise TypeError unless params[:frecuencia].is_a? String
     raise TypeError unless params[:fin].is_a? DateTime
   end
