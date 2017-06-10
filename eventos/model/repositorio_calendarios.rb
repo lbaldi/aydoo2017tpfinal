@@ -3,7 +3,7 @@ require_relative 'calendario'
 require_relative '../model/excepcion_unicidad_calendario'
 
 # Repositorio de calendarios
-class GestorDeCalendario
+class RepositorioCalendarios
   attr_accessor :calendarios
 
   def initialize
@@ -26,18 +26,5 @@ class GestorDeCalendario
 
   def eliminar_calendario(nombre)
     @calendarios.delete(nombre)
-  end
-
-  def write_file(path)
-    tempHash = JSON.dump @calendarios
-    File.open(path, "w") do |f|
-      f.write(tempHash)
-    end
-  end
-
-  def read_file(path)
-    f = File.read(path)
-    load = JSON.load f
-    @calendarios = load if load else {}
   end
 end
