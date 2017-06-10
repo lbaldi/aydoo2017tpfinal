@@ -4,23 +4,17 @@ require_relative '../model/repositorio_calendarios'
 describe 'Repositorio Calendarios' do
 
   it 'Debe crear un calendario a partir de un conjunto de datos correctos' do
-    datos_calendario = {
-        nombre: 'calendario 1'
-    }
+    nombre_calendario = 'Calendario 1'
     repositorio = RepositorioCalendarios.new
-    repositorio.crear_calendario(datos_calendario)
+    repositorio.crear_calendario(nombre_calendario)
   end
 
   it 'Error al crear un calendario con el mismo nombre que otro ya existente' do
-    datos_calendario = {
-        nombre: 'calendario 1'
-    }
-    datos_otro_calendario = {
-        nombre: 'calendario 1'
-    }
+    nombre_calendario = 'Calendario 1'
+    nombre_otro_calendario = 'Calendario 1'
     repositorio = RepositorioCalendarios.new
-    repositorio.crear_calendario(datos_calendario)
-    expect { repositorio.crear_calendario(datos_otro_calendario) }.to raise_error
+    repositorio.crear_calendario(nombre_calendario)
+    expect { repositorio.crear_calendario(nombre_otro_calendario) }.to raise_error
   end
 
   it 'No deberia poder obtener un calendario que no existe en el repositorio' do
@@ -29,20 +23,16 @@ describe 'Repositorio Calendarios' do
   end
 
   it 'Si pido eliminar un calendario que contenia el repositorio deberia obtener el calendario eliminado' do
-    datos_calendario = {
-        nombre: 'calendario 1'
-    }
+    nombre_calendario = 'Calendario 1'
     gestor = RepositorioCalendarios.new
-    calendario = gestor.crear_calendario(datos_calendario)
+    calendario = gestor.crear_calendario(nombre_calendario)
     expect(gestor.eliminar_calendario(calendario.nombre)).to eq calendario
   end
 
   it 'Si creo un calendario y solicito el diccionario de calendarios deberia contenerlo' do
-    datos_calendario = {
-        nombre: 'calendario 1'
-    }
+    nombre_calendario = 'Calendario 1'
     gestor = RepositorioCalendarios.new
-    calendario = gestor.crear_calendario(datos_calendario)
+    calendario = gestor.crear_calendario(nombre_calendario)
     expect(gestor.obtener_calendario(calendario.nombre)).to eq calendario
   end
 

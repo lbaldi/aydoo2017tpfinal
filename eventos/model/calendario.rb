@@ -3,15 +3,11 @@ class Calendario
   attr_reader :nombre
   attr_accessor :eventos
 
-  def initialize(params)
-    validar_parametros(params)
-    @nombre = params[:nombre]
+  def initialize(nombre)
+    nombre = estandarizar_nombre(nombre)
+    validar_nombre(nombre)
+    @nombre = nombre
     @eventos = {}
-  end
-
-  def validar_parametros(params)
-    raise TypeError unless params.is_a? Hash
-    raise TypeError unless params[:nombre].is_a? String
   end
 
   def crear_evento(params)
@@ -31,4 +27,15 @@ class Calendario
   def eliminar_evento(id)
     @eventos.delete(id)
   end
+
+  private
+
+  def validar_nombre(nombre)
+    raise ExcepcionNombreCalendario if nombre == ''
+  end
+
+  def estandarizar_nombre(nombre)
+    nombre.downcase
+  end
+
 end
