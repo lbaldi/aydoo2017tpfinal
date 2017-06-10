@@ -19,6 +19,8 @@ describe 'Repositorio Calendarios' do
     repositorio.almacenar_calendario(otro_calendario)
   end
 
+  # En este caso la identificacion es la misma
+  # y los nombres de calendario son iguales
   it 'Error al almacenar un calendario con una identificacion ya almacenada' do
     calendario = double('Calendario 1')
     allow(calendario).to receive(:nombre).and_return('Calendario 1')
@@ -26,7 +28,23 @@ describe 'Repositorio Calendarios' do
     allow(otro_calendario).to receive(:nombre).and_return('Calendario 1')
     repositorio = RepositorioCalendarios.new
     repositorio.almacenar_calendario(calendario)
-    expect { repositorio.almacenar_calendario(otro_calendario) }.to raise_error
+    expect do
+      repositorio.almacenar_calendario(otro_calendario)
+    end.to raise_error(ExcepcionUnicidadCalendario)
+  end
+
+  # En este caso la identificacion es la misma
+  # pero los nombres de los calendarios son diferentes
+  it 'Error al almacenar un calendario con una identificacion ya almacenada' do
+    calendario = double('Calendario 1')
+    allow(calendario).to receive(:nombre).and_return('Calendario 1')
+    otro_calendario = double('cAlEndArio 1')
+    allow(otro_calendario).to receive(:nombre).and_return('cAlEndArio 1')
+    repositorio = RepositorioCalendarios.new
+    repositorio.almacenar_calendario(calendario)
+    expect do
+      repositorio.almacenar_calendario(otro_calendario)
+    end.to raise_error(ExcepcionUnicidadCalendario)
   end
 
   it 'Deberia poder obtener un calendario almacenado' do
