@@ -1,3 +1,6 @@
+require_relative '../model/excepcion_nombre_calendario'
+require_relative '../model/excepcion_unicidad_evento'
+
 # Repositorio de eventos.
 class Calendario
   attr_reader :nombre
@@ -37,5 +40,4 @@ class Calendario
   def estandarizar_nombre(nombre)
     nombre.downcase
   end
-
 end

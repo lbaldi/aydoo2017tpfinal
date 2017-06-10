@@ -15,11 +15,7 @@ describe 'Calendario' do
   end
 
   it 'Error al crear un calendario sin nombre' do
-    expect { Calendario.new(nil) }.to raise_error
-  end
-
-  it 'Error al crear un calendario con nombre vacio' do
-    expect { Calendario.new('') }.to raise_error
+    expect { Calendario.new('') }.to raise_error(ExcepcionNombreCalendario)
   end
 
   it 'Error al editar nombre' do
@@ -56,7 +52,9 @@ describe 'Calendario' do
     }
     calendario = Calendario.new(nombre_calendario)
     calendario.crear_evento(datos_un_evento)
-    expect { calendario.crear_evento(datos_otro_evento) }.to raise_error
+    expect do
+      calendario.crear_evento(datos_otro_evento)
+    end.to raise_error(ExcepcionUnicidadEvento)
   end
 
   it 'Contener un evento que fue creado' do
