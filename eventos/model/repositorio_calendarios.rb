@@ -10,21 +10,29 @@ class RepositorioCalendarios
     @calendarios = {}
   end
 
-  def crear_calendario(params)
-    calendario = Calendario.new(params)
-    comprobar_unicidad_calendario(calendario.nombre)
-    @calendarios[calendario.nombre] = calendario
+  def almacenar_calendario(calendario)
+    identificacion = estandarizar_identificacion(calendario.nombre)
+    comprobar_unicidad_calendario(identificacion)
+    @calendarios[identificacion] = calendario
   end
 
-  def comprobar_unicidad_calendario(nombre)
-    raise ExcepcionUnicidadCalendario if @calendarios.key?(nombre)
+  def obtener_calendario(identificacion)
+    identificacion = estandarizar_identificacion(identificacion)
+    @calendarios[identificacion]
   end
 
-  def obtener_calendario(nombre)
-    @calendarios[nombre]
+  def eliminar_calendario(identificacion)
+    identificacion = estandarizar_identificacion(identificacion)
+    @calendarios.delete(identificacion)
   end
 
-  def eliminar_calendario(nombre)
-    @calendarios.delete(nombre)
+  private
+
+  def comprobar_unicidad_calendario(identificacion)
+    raise ExcepcionUnicidadCalendario if @calendarios.key?(identificacion)
+  end
+
+  def estandarizar_identificacion(identificacion)
+    identificacion.downcase
   end
 end
