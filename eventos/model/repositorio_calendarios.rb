@@ -1,4 +1,3 @@
-require 'json'
 require_relative 'calendario'
 require_relative '../model/excepcion_unicidad_calendario'
 
