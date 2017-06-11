@@ -19,7 +19,6 @@ class RepositorioCalendarios
   def obtener_calendario(identificacion)
     identificacion = estandarizar_identificacion(identificacion)
     @calendarios[identificacion] || raise(ExcepcionCalendarioInexistente)
-
   end
 
   def eliminar_calendario(identificacion)

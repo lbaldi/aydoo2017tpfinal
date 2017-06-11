@@ -47,7 +47,7 @@ describe 'Repositorio Calendarios' do
     end.to raise_error(ExcepcionUnicidadCalendario)
   end
 
-  it 'Deberia poder obtener un calendario almacenado' do
+  it 'Deberia poder obtener un calendario existente' do
     calendario = double('Calendario 1')
     allow(calendario).to receive(:nombre).and_return('Calendario 1')
     repositorio = RepositorioCalendarios.new
@@ -57,12 +57,12 @@ describe 'Repositorio Calendarios' do
 
   it 'Error al obtener un calendario inexistente' do
     repositorio = RepositorioCalendarios.new
-    expect{
-      repositorio.obtener_calendario('un nombre')
-    }.to raise_error(ExcepcionCalendarioInexistente)
+    expect do
+      repositorio.obtener_calendario('inexistente')
+    end.to raise_error(ExcepcionCalendarioInexistente)
   end
 
-  it 'Deberia poder eliminar un calendario almacenado' do
+  it 'Deberia poder eliminar un calendario existente' do
     calendario = double('Calendario 1')
     allow(calendario).to receive(:nombre).and_return('Calendario 1')
     repositorio = RepositorioCalendarios.new
@@ -72,8 +72,8 @@ describe 'Repositorio Calendarios' do
 
   it 'Error al eliminar un calendario inexistente' do
     repositorio = RepositorioCalendarios.new
-    expect{
+    expect do
       repositorio.eliminar_calendario('inexistente')
-    }.to raise_error(ExcepcionCalendarioInexistente)
+    end.to raise_error(ExcepcionCalendarioInexistente)
   end
 end
