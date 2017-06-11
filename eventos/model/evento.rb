@@ -29,7 +29,6 @@ class Evento
   def validar_lapso(inicio, fin)
     raise ExcepcionIntervaloErroneo if fin < inicio
     intervalo_en_horas = convertir_a_horas(fin - inicio)
-    puts inicio, fin
     ReglaIntervaloEvento.validar_horas(intervalo_en_horas)
   end
 
