@@ -23,7 +23,9 @@ class RepositorioCalendarios
 
   def eliminar_calendario(identificacion)
     identificacion = estandarizar_identificacion(identificacion)
-    raise ExcepcionCalendarioInexistente unless @calendarios.delete(identificacion)
+    unless @calendarios.delete(identificacion)
+      raise ExcepcionCalendarioInexistente
+    end
   end
 
   private
