@@ -1,6 +1,5 @@
 require 'rspec'
 require_relative '../model/calendario'
-require_relative '../model/evento'
 
 describe 'Calendario' do
   it 'Se deberia crear a partir de un nombre' do
@@ -8,14 +7,16 @@ describe 'Calendario' do
     Calendario.new(nombre_calendario)
   end
 
-  it 'Deberia guardar el nombre con el cual se crea en minuscula' do
+  it 'Deberia guardar el nombre con el cual se crea' do
     nombre_calendario = 'Calendario 1'
     calendario = Calendario.new(nombre_calendario)
-    expect(calendario.nombre).to eq nombre_calendario.downcase
+    expect(calendario.nombre).to eq nombre_calendario
   end
 
   it 'Error al crear un calendario sin nombre' do
-    expect { Calendario.new('') }.to raise_error(ExcepcionNombreCalendario)
+    expect do
+      Calendario.new('')
+    end.to raise_error(ExcepcionNombreCalendario)
   end
 
   it 'Error al editar nombre' do
@@ -25,79 +26,69 @@ describe 'Calendario' do
     expect { calendario.nombre = nuevo_nombre_calendario }.to raise_error
   end
 
-  it 'Debe crear un evento a partir de un conjunto de datos correctos' do
+  it 'Debe poder almacenar un evento' do
     nombre_calendario = 'Calendario 1'
-    datos_evento = {
-      id: 'id_1',
-      nombre: 'Evento_1',
-      inicio: DateTime.now,
-      fin: DateTime.now
-    }
-    Calendario.new(nombre_calendario).crear_evento(datos_evento)
+    evento = double('Evento 1')
+    allow(evento).to receive(:id).and_return('id_1')
+    calendario = Calendario.new(nombre_calendario)
+    calendario.almacenar_evento(evento)
   end
 
-  it 'Error al crear un evento con el mismo id que uno existente' do
+  it 'Debe poder almacenar varios eventos' do
     nombre_calendario = 'Calendario 1'
-    datos_un_evento = {
-      id: 'id_1',
-      nombre: 'Evento_1',
-      inicio: DateTime.now,
-      fin: DateTime.now
-    }
-    datos_otro_evento = {
-      id: 'id_1',
-      nombre: 'Evento_2',
-      inicio: DateTime.now,
-      fin: DateTime.now
-    }
+    evento = double('Evento 1')
+    allow(evento).to receive(:id).and_return('id_1')
+    otro_evento = double('Evento 2')
+    allow(otro_evento).to receive(:id).and_return('id_2')
     calendario = Calendario.new(nombre_calendario)
-    calendario.crear_evento(datos_un_evento)
+    calendario.almacenar_evento(evento)
+    calendario.almacenar_evento(otro_evento)
+  end
+
+  it 'Error al crear un evento con mismo id que uno existente' do
+    nombre_calendario = 'Calendario 1'
+    evento = double('Evento 1')
+    allow(evento).to receive(:id).and_return('id_1')
+    otro_evento = double('Evento 2')
+    allow(otro_evento).to receive(:id).and_return('id_1')
+    calendario = Calendario.new(nombre_calendario)
+    calendario.almacenar_evento(evento)
     expect do
-      calendario.crear_evento(datos_otro_evento)
+      calendario.almacenar_evento(otro_evento)
     end.to raise_error(ExcepcionUnicidadEvento)
   end
 
-  it 'Contener un evento que fue creado' do
+  it 'Deberia poder obtener un evento existente' do
     nombre_calendario = 'Calendario 1'
-    datos_evento = {
-      id: 'id_1',
-      nombre: 'Evento_1',
-      inicio: DateTime.now,
-      fin: DateTime.now
-    }
+    evento = double('Evento 1')
+    allow(evento).to receive(:id).and_return('id_1')
     calendario = Calendario.new(nombre_calendario)
-    evento = calendario.crear_evento(datos_evento)
+    calendario.almacenar_evento(evento)
     expect(calendario.obtener_evento(evento.id)).to eq evento
   end
 
-  it 'Eliminar un evento inexistente en el calendario' do
+  it 'Error al obtener un evento inexistente' do
     nombre_calendario = 'Calendario 1'
     calendario = Calendario.new(nombre_calendario)
-    expect(calendario.eliminar_evento('otro_id')).to eq nil
+    expect do
+      calendario.obtener_evento('inexistente')
+    end.to raise_error(ExcepcionEventoInexistente)
   end
 
-  it 'Deberia obtener nil al obtener un evento que no contiene' do
+  it 'Deberia poder eliminar un evento existente' do
     nombre_calendario = 'Calendario 1'
+    evento = double('Evento 1')
+    allow(evento).to receive(:id).and_return('id_1')
     calendario = Calendario.new(nombre_calendario)
-    expect(calendario.obtener_evento('otro_id')).to eq nil
+    calendario.almacenar_evento(evento)
+    calendario.eliminar_evento(evento.id)
   end
 
-  it 'Obtener el evento que solicito eliminar' do
-    nombre_calendario = 'Calendario 1'
-    datos_evento = {
-      id: 'id_1',
-      nombre: 'Evento_1',
-      inicio: DateTime.now,
-      fin: DateTime.now
-    }
-    calendario = Calendario.new(nombre_calendario)
-    evento = calendario.crear_evento(datos_evento)
-    expect(calendario.eliminar_evento(evento.id)).to eq evento
-  end
-
-  it 'No deberia obtener un evento inexistente' do
+  it 'Error al eliminar un evento inexistente' do
     nombre_calendario = 'Calendario 1'
     calendario = Calendario.new(nombre_calendario)
-    expect(calendario.obtener_evento('un evento')).to eq nil
+    expect do
+      calendario.eliminar_evento('inexistente')
+    end.to raise_error(ExcepcionEventoInexistente)
   end
 end
