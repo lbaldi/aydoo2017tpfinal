@@ -4,6 +4,15 @@ require_relative 'model/repositorio_calendarios'
 require_relative 'model/calendario'
 require_relative 'model/evento'
 
+
+# @TODO GENERAL
+# - Hay que armar clases para la impresion de datos
+# - Hay que ver si los codigos de errores estan ok
+# - Limpiar y emprolijar un poco este archivo
+
+# @TODO
+# - Hay que levantar los datos de disco
+# - Tras cada funcion volver a escribirlos
 repositorio_calendarios = RepositorioCalendarios.new
 
 post '/calendarios' do
@@ -43,6 +52,10 @@ get '/calendarios/:nombre' do
 end
 
 post '/eventos' do
+  # @TODO
+  # Ver que tambien puede venir en vez de eventos
+  # eventos recurrentes. Para ello pense crear una
+  # nueva clase.
   begin
     request.body.rewind
     body = JSON.parse request.body.read
@@ -63,6 +76,13 @@ post '/eventos' do
 end
 
 put '/eventos' do
+  # @TODO
+  # - Ver que tambien puede venir en vez de eventos
+  # eventos recurrentes. Para ello pense crear una
+  # nueva clase.
+  # - Ojo que en base a la respuesta que den aca hay que
+  # sacar el parametro de calendario dado que no siempre
+  # puede venir dado.
   begin
     request.body.rewind
     body = JSON.parse request.body.read
