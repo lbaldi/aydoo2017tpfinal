@@ -2,9 +2,8 @@ require 'rspec'
 require_relative '../model/regla_intervalo_evento'
 
 describe 'Regla Intervalo Evento' do
-
   it 'Deberia validar un intervalo menos a 72 horas' do
-      ReglaIntervaloEvento.validar_horas(71.99)
+    ReglaIntervaloEvento.validar_horas(71.99)
   end
 
   it 'Error al intentar validar un intervalo de 72 horas' do
