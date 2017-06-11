@@ -1,4 +1,4 @@
-require_relative 'calendario'
+require_relative '../model/calendario'
 require_relative '../model/excepcion_unicidad_calendario'
 require_relative '../model/excepcion_calendario_inexistente'
 
