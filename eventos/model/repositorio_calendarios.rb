@@ -4,7 +4,7 @@ require_relative '../model/excepcion_calendario_inexistente'
 
 # Repositorio de calendarios
 class RepositorioCalendarios
-  attr_accessor :calendarios
+  attr_reader :calendarios
 
   def initialize
     @calendarios = {}

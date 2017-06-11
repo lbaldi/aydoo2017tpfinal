@@ -7,7 +7,7 @@ NOMBRE_VACIO = ''.freeze
 # Repositorio de eventos.
 class Calendario
   attr_reader :nombre
-  attr_accessor :eventos
+  attr_reader :eventos
 
   def initialize(nombre)
     validar_nombre(nombre)
