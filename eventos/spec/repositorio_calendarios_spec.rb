@@ -55,9 +55,11 @@ describe 'Repositorio Calendarios' do
     expect(repositorio.obtener_calendario(calendario.nombre)).to eq calendario
   end
 
-  it 'No deberia poder obtener un calendario que no se haya almacenado' do
+  it 'Error al obtener un calendario inexistente' do
     repositorio = RepositorioCalendarios.new
-    expect(repositorio.obtener_calendario('un nombre')).to eq nil
+    expect{
+      repositorio.obtener_calendario('un nombre')
+    }.to raise_error(ExcepcionCalendarioInexistente)
   end
 
   it 'Deberia poder eliminar un calendario almacenado' do
@@ -68,8 +70,10 @@ describe 'Repositorio Calendarios' do
     repositorio.eliminar_calendario(calendario.nombre)
   end
 
-  it 'No deberia poder eliminar un calendario que no se haya almacenado' do
+  it 'Error al eliminar un calendario inexistente' do
     repositorio = RepositorioCalendarios.new
-    expect(repositorio.eliminar_calendario('inexistente')).to eq nil
+    expect{
+      repositorio.eliminar_calendario('inexistente')
+    }.to raise_error(ExcepcionCalendarioInexistente)
   end
 end

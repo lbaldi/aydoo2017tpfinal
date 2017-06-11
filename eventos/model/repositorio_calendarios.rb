@@ -1,5 +1,6 @@
 require_relative 'calendario'
 require_relative '../model/excepcion_unicidad_calendario'
+require_relative '../model/excepcion_calendario_inexistente'
 
 # Repositorio de calendarios
 class RepositorioCalendarios
@@ -17,12 +18,13 @@ class RepositorioCalendarios
 
   def obtener_calendario(identificacion)
     identificacion = estandarizar_identificacion(identificacion)
-    @calendarios[identificacion]
+    @calendarios[identificacion] || raise(ExcepcionCalendarioInexistente)
+
   end
 
   def eliminar_calendario(identificacion)
     identificacion = estandarizar_identificacion(identificacion)
-    @calendarios.delete(identificacion)
+    raise ExcepcionCalendarioInexistente unless @calendarios.delete(identificacion)
   end
 
   private
