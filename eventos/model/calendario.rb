@@ -16,6 +16,7 @@ class Calendario
   def almacenar_evento(evento)
     identificacion = evento.id
     comprobar_unicidad_evento(identificacion)
+    comprobar_solapamiento_evento(evento)
     @eventos[identificacion] = evento
   end
 
@@ -36,5 +37,15 @@ class Calendario
 
   def comprobar_unicidad_evento(identificacion)
     raise ExcepcionUnicidadEvento if @eventos.key?(identificacion)
+  end
+
+  def comprobar_solapamiento_evento(evento)
+    # @TODO
+    # - Obtener lapsos cubiertos por la lista de eventos
+    #   y comparar a los que ocuparia este evento
+    #   al evento siempre solicitar los lapsos ya sea
+    #   recurrente o no.
+    #   Para esto va a falta crear la clase de evento
+    #   recursivo, excepcion de solapamiento.
   end
 end
