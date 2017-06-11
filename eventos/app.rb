@@ -1,7 +1,24 @@
+require 'json'
 require 'sinatra'
+require_relative 'model/repositorio_calendarios'
+
+repositorio_calendarios = RepositorioCalendarios.new
 
 post '/calendarios' do
-  request.body.read
+  request.body.rewind
+  begin
+    request_payload = JSON.parse request.body.read
+    nombre_calendario = request_payload['nombre']
+    calendario = Calendario.new(nombre_calendario)
+    repositorio_calendarios.almacenar_calendario(calendario)
+  rescue ExcepcionUnicidadCalendario
+    status 400
+  rescue ExcepcionNombreCalendario
+    status 400
+  rescue
+    status 417
+  end
+
 end
 
 delete '/calendarios/:nombre' do

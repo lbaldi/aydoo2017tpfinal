@@ -2,6 +2,8 @@ require_relative '../model/excepcion_nombre_calendario'
 require_relative '../model/excepcion_unicidad_evento'
 require_relative '../model/excepcion_evento_inexistente'
 
+NOMBRE_VACIO = ''.freeze
+
 # Repositorio de eventos.
 class Calendario
   attr_reader :nombre
@@ -31,8 +33,7 @@ class Calendario
   private
 
   def validar_nombre(nombre)
-    nombre_vacio = ''
-    raise ExcepcionNombreCalendario if nombre == nombre_vacio
+    raise ExcepcionNombreCalendario if nombre == NOMBRE_VACIO
   end
 
   def comprobar_unicidad_evento(identificacion)
