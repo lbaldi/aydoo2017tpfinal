@@ -1,3 +1,4 @@
+require_relative '../model/regla_intervalo_evento'
 require_relative '../model/excepcion_intervalo_erroneo'
 
 # Representa un evento. Limitado por un inicio y un fin
@@ -27,8 +28,13 @@ class Evento
 
   def validar_lapso(inicio, fin)
     raise ExcepcionIntervaloErroneo if fin < inicio
-    # @TODO
-    # - Cubrir caso horario < 72 hs
-    #   Va a faltar crear la excepcion de lapso
+    intervalo_en_horas = convertir_a_horas(fin - inicio)
+    puts inicio, fin
+    ReglaIntervaloEvento.validar_horas(intervalo_en_horas)
+  end
+
+  def convertir_a_horas(intervalo)
+    conversor_a_horas = (1 / 24.0)
+    intervalo / conversor_a_horas
   end
 end
