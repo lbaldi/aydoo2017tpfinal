@@ -55,6 +55,15 @@ describe 'Evento' do
     expect(evento.fin).to eq fin
   end
 
+  it 'Deberia poder obtener el intervalo del evento' do
+    id = 'id_1'
+    nombre = 'Evento 1'
+    inicio = DateTime.now
+    fin = inicio
+    evento = Evento.new(id, nombre, inicio, fin)
+    expect(evento.obtener_intervalo).to eq inicio..fin
+  end
+
   it 'Deberia poder modificar su nombre' do
     id = 'id_1'
     nombre = 'Evento 1'

@@ -24,6 +24,10 @@ class Evento
     @fin = value
   end
 
+  def obtener_intervalo
+    @inicio..@fin
+  end
+
   private
 
   def validar_lapso(inicio, fin)

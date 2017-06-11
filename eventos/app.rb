@@ -70,7 +70,8 @@ post '/eventos' do
   rescue  ExcepcionCalendarioInexistente,
           ExcepcionIntervaloErroneo,
           ExcepcionIntervaloMaximo,
-          ExcepcionUnicidadEvento
+          ExcepcionUnicidadEvento,
+          ExcepcionSolapamientoEvento
     status 400
   end
 end
@@ -107,7 +108,8 @@ put '/eventos' do
   rescue  ExcepcionCalendarioInexistente,
           ExcepcionEventoInexistente,
           ExcepcionIntervaloErroneo,
-          ExcepcionIntervaloMaximo
+          ExcepcionIntervaloMaximo,
+          ExcepcionSolapamientoEvento
     status 400
   end
 end
