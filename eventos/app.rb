@@ -64,8 +64,10 @@ post '/eventos' do
     inicio_evento = DateTime.parse(body['inicio'])
     fin_evento = DateTime.parse(body['fin'])
     nombre_calendario = body['calendario']
+    frecuencia_evento = body['frecuencia']
+    fin = body['fin']
     calendario = repositorio_calendarios.obtener_calendario(nombre_calendario)
-    evento = Evento.new(id_evento, nombre_evento, inicio_evento, fin_evento)
+    evento = Evento.new(id_evento, nombre_evento, inicio_evento, fin_evento, frecuencia_evento, fin)
     calendario.almacenar_evento(evento)
   rescue  ExcepcionCalendarioInexistente,
           ExcepcionIntervaloErroneo,

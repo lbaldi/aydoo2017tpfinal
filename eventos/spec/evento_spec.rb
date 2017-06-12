@@ -1,5 +1,8 @@
 require 'rspec'
+
 require_relative '../model/evento'
+
+require_relative '../model/recurrencia'
 
 describe 'Evento' do
   it 'Se debe crear a partir de un id, nombre, inicio y fin' do
@@ -7,7 +10,9 @@ describe 'Evento' do
     nombre = 'Evento 1'
     inicio = DateTime.now
     fin = inicio
-    Evento.new(id, nombre, inicio, fin)
+    frecuencia = 'semanal'
+    fin_recurrencia = DateTime.now + 30
+    Evento.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
   end
 
   it 'Deberia poder obtener el id' do
@@ -15,7 +20,9 @@ describe 'Evento' do
     nombre = 'Evento 1'
     inicio = DateTime.now
     fin = inicio
-    evento = Evento.new(id, nombre, inicio, fin)
+    frecuencia = 'semanal'
+    fin_recurrencia = DateTime.now + 30
+    evento = Evento.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
     expect(evento.id).to eq id
   end
 
@@ -24,7 +31,9 @@ describe 'Evento' do
     nombre = 'Evento 1'
     inicio = DateTime.now
     fin = inicio
-    evento = Evento.new(id, nombre, inicio, fin)
+    frecuencia = 'semanal'
+    fin_recurrencia = DateTime.now + 30
+    evento = Evento.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
     expect { evento.id = 'nuevo_id' }.to raise_error
   end
 
@@ -33,7 +42,9 @@ describe 'Evento' do
     nombre = 'Evento 1'
     inicio = DateTime.now
     fin = inicio
-    evento = Evento.new(id, nombre, inicio, fin)
+    frecuencia = 'semanal'
+    fin_recurrencia = DateTime.now + 30
+    evento = Evento.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
     expect(evento.nombre).to eq nombre
   end
 
@@ -42,7 +53,9 @@ describe 'Evento' do
     nombre = 'Evento 1'
     inicio = DateTime.now
     fin = inicio
-    evento = Evento.new(id, nombre, inicio, fin)
+    frecuencia = 'semanal'
+    fin_recurrencia = DateTime.now + 30
+    evento = Evento.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
     expect(evento.inicio).to eq inicio
   end
 
@@ -51,7 +64,9 @@ describe 'Evento' do
     nombre = 'Evento 1'
     inicio = DateTime.now
     fin = inicio
-    evento = Evento.new(id, nombre, inicio, fin)
+    frecuencia = 'semanal'
+    fin_recurrencia = DateTime.now + 30
+    evento = Evento.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
     expect(evento.fin).to eq fin
   end
 
@@ -60,7 +75,9 @@ describe 'Evento' do
     nombre = 'Evento 1'
     inicio = DateTime.now
     fin = inicio
-    evento = Evento.new(id, nombre, inicio, fin)
+    frecuencia = 'semanal'
+    fin_recurrencia = DateTime.now + 30
+    evento = Evento.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
     expect(evento.obtener_intervalo).to eq inicio..fin
   end
 
@@ -69,7 +86,9 @@ describe 'Evento' do
     nombre = 'Evento 1'
     inicio = DateTime.now
     fin = inicio
-    evento = Evento.new(id, nombre, inicio, fin)
+    frecuencia = 'semanal'
+    fin_recurrencia = DateTime.now + 30
+    evento = Evento.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
     nuevo_nombre = 'nuevo_nombre'
     evento.nombre = nuevo_nombre
     expect(evento.nombre).to eq nuevo_nombre
@@ -80,7 +99,9 @@ describe 'Evento' do
     nombre = 'Evento 1'
     inicio = DateTime.now
     fin = inicio
-    evento = Evento.new(id, nombre, inicio, fin)
+    frecuencia = 'semanal'
+    fin_recurrencia = DateTime.now + 30
+    evento = Evento.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
     un_dia = 1
     nuevo_inicio = inicio - un_dia
     evento.inicio = nuevo_inicio
@@ -91,7 +112,9 @@ describe 'Evento' do
     nombre = 'Evento 1'
     inicio = DateTime.now
     fin = inicio
-    evento = Evento.new(id, nombre, inicio, fin)
+    frecuencia = 'semanal'
+    fin_recurrencia = DateTime.now + 30
+    evento = Evento.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
     un_dia = 1
     nuevo_fin = fin + un_dia
     evento.fin = nuevo_fin
@@ -103,8 +126,10 @@ describe 'Evento' do
     inicio = DateTime.now
     un_dia = 1
     fin = inicio - un_dia
+    frecuencia = 'semanal'
+    fin_recurrencia = DateTime.now + 30
     expect do
-      Evento.new(id, nombre, inicio, fin)
+      Evento.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
     end.to raise_error(ExcepcionIntervaloErroneo)
   end
 
@@ -113,7 +138,9 @@ describe 'Evento' do
     nombre = 'Evento 1'
     inicio = DateTime.now
     fin = inicio
-    evento = Evento.new(id, nombre, inicio, fin)
+    frecuencia = 'semanal'
+    fin_recurrencia = DateTime.now + 30
+    evento = Evento.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
     un_dia = 1
     nuevo_fin = inicio - un_dia
     expect do
@@ -126,7 +153,9 @@ describe 'Evento' do
     nombre = 'Evento 1'
     inicio = DateTime.now
     fin = inicio
-    evento = Evento.new(id, nombre, inicio, fin)
+    frecuencia = 'semanal'
+    fin_recurrencia = DateTime.now + 30
+    evento = Evento.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
     un_dia = 1
     nuevo_inicio = inicio + un_dia
     expect do
@@ -139,7 +168,9 @@ describe 'Evento' do
     nombre = 'Evento 1'
     inicio = DateTime.now
     fin = inicio
-    evento = Evento.new(id, nombre, inicio, fin)
+    frecuencia = 'semanal'
+    fin_recurrencia = DateTime.now + 30
+    evento = Evento.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
     tres_dias = 3
     nuevo_inicio = inicio - tres_dias
     expect do
@@ -152,7 +183,9 @@ describe 'Evento' do
     nombre = 'Evento 1'
     inicio = DateTime.now
     fin = inicio
-    evento = Evento.new(id, nombre, inicio, fin)
+    frecuencia = 'quincenal'
+    fin_recurrencia = DateTime.now + 30
+    evento = Evento.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
     tres_dias = 3
     nuevo_fin = inicio + tres_dias
     expect do
@@ -165,7 +198,9 @@ describe 'Evento' do
     nombre = 'Evento 1'
     inicio = DateTime.now
     fin = inicio
-    evento = Evento.new(id, nombre, inicio, fin)
+    frecuencia = 'mensual'
+    fin_recurrencia = DateTime.now + 30
+    evento = Evento.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
     casi_tres_dias = 2.99
     nuevo_fin = inicio + casi_tres_dias
     evento.fin = nuevo_fin
@@ -176,7 +211,9 @@ describe 'Evento' do
     nombre = 'Evento 1'
     inicio = DateTime.now
     fin = inicio
-    evento = Evento.new(id, nombre, inicio, fin)
+    frecuencia = 'quincenal'
+    fin_recurrencia = DateTime.now + 30
+    evento = Evento.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
     casi_tres_dias = 2.99
     nuevo_inicio = inicio - casi_tres_dias
     evento.inicio = nuevo_inicio
