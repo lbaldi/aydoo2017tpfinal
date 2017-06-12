@@ -1,3 +1,4 @@
+# Representa una recurrencia de un evento, con una frecuencia y un fin
 class Recurrencia
   attr_accessor :frecuencia, :fin
 
