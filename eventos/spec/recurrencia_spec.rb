@@ -17,4 +17,10 @@ describe 'Recurrencia' do
     expect(recurrencia.frecuencia).to eq frecuencia
   end
 
+  it 'No deberia permitir crear una recurrencia con una frecuencia no definida' do
+    frecuencia = ''
+    fin_recurrencia = DateTime.now + 30
+    expect { Recurrencia.new(frecuencia, fin_recurrencia) }.to raise_error(ExcepcionFrecuenciaNoDefinida)
+  end
+
 end
