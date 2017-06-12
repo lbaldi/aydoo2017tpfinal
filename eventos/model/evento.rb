@@ -6,15 +6,14 @@ CONVERSOR_HORAS = (1 / 24.0)
 # Representa un evento. Limitado por un inicio y un fin
 class Evento
   attr_reader :id
-  attr_accessor :nombre, :inicio, :fin, :recurrencia
+  attr_accessor :nombre, :inicio, :fin
 
-  def initialize(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
+  def initialize(id, nombre, inicio, fin)
     validar_intervalo(inicio, fin)
     @id = id
     @nombre = nombre
     @inicio = inicio
     @fin = fin
-    @recurrencia = crear_recurrencia(frecuencia, fin_recurrencia)
   end
 
   def inicio=(value)
@@ -29,10 +28,6 @@ class Evento
 
   def obtener_intervalo
     @inicio..@fin
-  end
-
-  def crear_recurrencia(frecuencia, fin_recurrencia)
-    Recurrencia.new(frecuencia, fin_recurrencia)
   end
 
   private

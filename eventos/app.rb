@@ -67,7 +67,12 @@ post '/eventos' do
     frecuencia_evento = body['frecuencia']
     fin = body['fin']
     calendario = repositorio_calendarios.obtener_calendario(nombre_calendario)
-    evento = Evento.new(id_evento, nombre_evento, inicio_evento, fin_evento, frecuencia_evento, fin)
+    if frecuencia_evento.nil?
+      evento = Evento.new(id_evento, nombre_evento, inicio_evento, fin_evento)
+    else
+      recurrencia_evento = Recurrencia.new(frecuencia_evento, fin)
+      evento = EventoRecurrente.new(id_evento, nombre_evento, inicio_evento, fin_evento, recurrencia_evento)
+    end
     calendario.almacenar_evento(evento)
   rescue  ExcepcionCalendarioInexistente,
           ExcepcionIntervaloErroneo,
