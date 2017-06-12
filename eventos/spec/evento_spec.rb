@@ -5,7 +5,7 @@ require_relative '../model/evento'
 require_relative '../model/recurrencia'
 
 describe 'Evento' do
-  it 'Se debe crear a partir de un id, nombre, inicio y fin' do
+  it 'Se debe crear a partir de un id, nombre, inicio, fin, frecuencia y fin de recurrencia' do
     id = 'id_1'
     nombre = 'Evento 1'
     inicio = DateTime.now
