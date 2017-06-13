@@ -150,4 +150,101 @@ describe 'Calendario' do
       calendario.eliminar_evento('inexistente')
     end.to raise_error(ExcepcionEventoInexistente)
   end
+
+  it 'Deberia poder almacenar dos eventos recurrentes que no se solapen' do
+    # Suponiendo que hoy es Lunes 01
+    # Evento 1:
+    #   inicia: Lunes 01 HH:MM:SS
+    #   finaliza: Martes 02 HH:MM:SS
+    #   Tiene una recurrencia semanal con fin: Lunes 15
+    #   Por lo que tendremos Lunes 01 HH:MM:SS - Martes 02 HH:MM:SS
+    #                        Lunes 08 HH:MM:SS - Martes 09 HH:MM:SS
+    #                        Lunes 15 HH:MM:SS - Martes 16 HH:MM:SS
+    # Evento 2:
+    #   inicia: Jueves 04 HH:MM:SS
+    #   finaliza: Viernes 05 HH:MM:SS
+    #   Tiene una recurrencia semanal con fin: Jueves 11
+    #   Por lo que tendremos Jueves 04 HH:MM:SS - Viernes 05 HH:MM:SS
+    #                        Jueves 11 HH:MM:SS - Viernes 12 HH:MM:SS
+    nombre_calendario = 'Calendario 1'
+
+    dia_lunes_01 = DateTime.now
+    dia_martes_02 = dia_lunes_01 + 1
+    dia_lunes_08 = dia_lunes_01 + 7
+    dia_martes_09 = dia_martes_02 + 7
+    dia_lunes_15 = dia_lunes_08 + 7
+    dia_martes_16 = dia_martes_09 + 7
+
+    intervalo_primer_evento = [
+      dia_lunes_01..dia_martes_02,
+      dia_lunes_08..dia_martes_09,
+      dia_lunes_15..dia_martes_16
+    ]
+    primer_evento = double('Evento 1')
+    allow(primer_evento).to receive(:id).and_return('id_1')
+    allow(primer_evento).to receive(:obtener_intervalo).and_return(intervalo_primer_evento)
+
+
+    dia_jueves_04 = DateTime.now + 3
+    dia_viernes_05 = dia_jueves_04 + 1
+    dia_jueves_11 = dia_jueves_04 + 7
+    dia_viernes_12 = dia_viernes_05 + 7
+
+    intervalo_segundo_evento = [
+      dia_jueves_04..dia_viernes_05,
+      dia_jueves_11..dia_viernes_12
+    ]
+    segundo_evento = double('Evento 2')
+    allow(segundo_evento).to receive(:id).and_return('id_2')
+    allow(segundo_evento).to receive(:obtener_intervalo).and_return(intervalo_segundo_evento)
+
+    calendario = Calendario.new(nombre_calendario)
+    calendario.almacenar_evento(primer_evento)
+    calendario.almacenar_evento(segundo_evento)
+  end
+
+  it 'Error al almacenar dos eventos que se solapen uno de ellos recurrente' do
+    # Suponiendo que hoy es Lunes 01
+    # Evento 1:
+    #   inicia: Lunes 01 HH:MM:SS
+    #   finaliza: Martes 02 HH:MM:SS
+    #   Tiene una recurrencia semanal con fin: Lunes 15
+    #   Por lo que tendremos Lunes 01 HH:MM:SS - Martes 02 HH:MM:SS
+    #                        Lunes 08 HH:MM:SS - Martes 09 HH:MM:SS
+    #                        Lunes 15 HH:MM:SS - Martes 16 HH:MM:SS
+    # Evento 2:
+    #   inicia: Martes 09 HH:MM:SS
+    #   finaliza: Miercoles 10 HH:MM:SS
+    nombre_calendario = 'Calendario 1'
+
+    dia_lunes_01 = DateTime.now
+    dia_martes_02 = dia_lunes_01 + 1
+    dia_lunes_08 = dia_lunes_01 + 7
+    dia_martes_09 = dia_martes_02 + 7
+    dia_lunes_15 = dia_lunes_08 + 7
+    dia_martes_16 = dia_martes_09 + 7
+
+    intervalo_primer_evento = [
+        dia_lunes_01..dia_martes_02,
+        dia_lunes_08..dia_martes_09,
+        dia_lunes_15..dia_martes_16
+    ]
+    primer_evento = double('Evento 1')
+    allow(primer_evento).to receive(:id).and_return('id_1')
+    allow(primer_evento).to receive(:obtener_intervalo).and_return(intervalo_primer_evento)
+
+    dia_miercoles_10 = dia_martes_09 + 1
+
+    intervalo_segundo_evento = dia_martes_09..dia_miercoles_10
+
+    segundo_evento = double('Evento 2')
+    allow(segundo_evento).to receive(:id).and_return('id_2')
+    allow(segundo_evento).to receive(:obtener_intervalo).and_return(intervalo_segundo_evento)
+
+    calendario = Calendario.new(nombre_calendario)
+    calendario.almacenar_evento(primer_evento)
+    expect do
+      calendario.almacenar_evento(segundo_evento)
+    end.to raise_error(ExcepcionSolapamientoEvento)
+  end
 end
