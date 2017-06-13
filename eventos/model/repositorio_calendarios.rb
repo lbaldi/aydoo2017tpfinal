@@ -33,6 +33,10 @@ class RepositorioCalendarios
     GestorArchivoCalendarios.leer_calendarios_en_disco || {}
   end
 
+  def self.obtener_lista_calendarios
+    GestorArchivoCalendarios.leer_calendarios_en_disco || {}
+  end
+
   def actualizar
     GestorArchivoCalendarios.guardar_calendarios_en_disco(calendarios)
   end
