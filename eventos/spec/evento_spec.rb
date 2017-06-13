@@ -1,9 +1,8 @@
 require 'rspec'
-
 require_relative '../model/evento'
 
 describe 'Evento' do
-  it 'Se debe crear un evento no recurrente a partir de un id, nombre, inicio y fin' do
+  it 'Se debe crear un evento a partir de un id, nombre, inicio y fin' do
     id = 'id_1'
     nombre = 'Evento 1'
     inicio = DateTime.now

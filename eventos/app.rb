@@ -3,16 +3,30 @@ require 'sinatra'
 require_relative 'model/repositorio_calendarios'
 require_relative 'model/calendario'
 require_relative 'model/evento'
+require_relative 'model/evento_recurrente'
+require_relative 'model/frecuencia_diaria'
+require_relative 'model/frecuencia_semanal'
+require_relative 'model/frecuencia_mensual'
+require_relative 'model/frecuencia_anual'
 
 
 # @TODO GENERAL
 # - Hay que armar clases para la impresion de datos
+# - HAY QUE ELIMINAR LOS PUTS y hacer returns
 # - Hay que ver si los codigos de errores estan ok
 # - Limpiar y emprolijar un poco este archivo
 
 # @TODO
 # - Hay que levantar los datos de disco
 # - Tras cada funcion volver a escribirlos
+
+frecuencias = {
+  "diaria" => FrecuenciaDiaria.new,
+  "semanal" => FrecuenciaSemanal.new,
+  "mensual" => FrecuenciaMensual.new,
+  "anual" => FrecuenciaAnual.new
+}
+
 repositorio_calendarios = RepositorioCalendarios.new
 
 post '/calendarios' do
@@ -52,10 +66,6 @@ get '/calendarios/:nombre' do
 end
 
 post '/eventos' do
-  # @TODO
-  # Ver que tambien puede venir en vez de eventos
-  # eventos recurrentes. Para ello pense crear una
-  # nueva clase.
   begin
     request.body.rewind
     body = JSON.parse request.body.read
@@ -64,14 +74,26 @@ post '/eventos' do
     inicio_evento = DateTime.parse(body['inicio'])
     fin_evento = DateTime.parse(body['fin'])
     nombre_calendario = body['calendario']
-    frecuencia_evento = body['frecuencia']
-    fin = body['fin']
     calendario = repositorio_calendarios.obtener_calendario(nombre_calendario)
-    if frecuencia_evento.nil?
-      evento = Evento.new(id_evento, nombre_evento, inicio_evento, fin_evento)
+    if body.key?('recurrencia')
+      frecuencia_evento = body['recurrencia']['frecuencia']
+      frecuencia = frecuencias[frecuencia_evento]
+      fin_recurrencia_evento = DateTime.parse(body['recurrencia']['fin'])
+      evento = EventoRecurrente.new(
+        id_evento,
+        nombre_evento,
+        inicio_evento,
+        fin_evento,
+        frecuencia,
+        fin_recurrencia_evento
+      )
     else
-      recurrencia_evento = Recurrencia.new(frecuencia_evento, fin)
-      evento = EventoRecurrente.new(id_evento, nombre_evento, inicio_evento, fin_evento, recurrencia_evento)
+      evento = Evento.new(
+        id_evento,
+        nombre_evento,
+        inicio_evento,
+        fin_evento
+      )
     end
     calendario.almacenar_evento(evento)
   rescue  ExcepcionCalendarioInexistente,
@@ -88,9 +110,8 @@ put '/eventos' do
   # - Ver que tambien puede venir en vez de eventos
   # eventos recurrentes. Para ello pense crear una
   # nueva clase.
-  # - Ojo que en base a la respuesta que den aca hay que
-  # sacar el parametro de calendario dado que no siempre
-  # puede venir dado.
+  # - OJOOOOO!!! ACA VAN A ENVIAR ID DIRECTO
+  # NO VAN A ENVIAR EL CALENDARIO SIEMPRE.
   begin
     request.body.rewind
     body = JSON.parse request.body.read
