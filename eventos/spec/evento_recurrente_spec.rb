@@ -9,6 +9,7 @@ describe 'Evento Recurrente' do
     inicio = DateTime.now
     fin = inicio
     frecuencia = double('Frecuencia')
+    allow(frecuencia).to receive(:frecuencia).and_return(1)
     fin_recurrencia = DateTime.now + 30
     EventoRecurrente.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
   end
@@ -19,6 +20,7 @@ describe 'Evento Recurrente' do
     inicio = DateTime.now
     fin = inicio
     frecuencia = double('Frecuencia')
+    allow(frecuencia).to receive(:frecuencia).and_return(1)
     fin_recurrencia = DateTime.now - 1
     expect do
       EventoRecurrente.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
@@ -30,7 +32,8 @@ describe 'Evento Recurrente' do
     nombre = 'Evento 1'
     inicio = DateTime.now
     fin = inicio
-    frecuencia = nil
+    frecuencia = double('Frecuencia')
+    allow(frecuencia).to receive(:frecuencia).and_return(1)
     fin_recurrencia = DateTime.now + 30
     evento_recurrente = EventoRecurrente.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
     expect(evento_recurrente.frecuencia).to eq frecuencia
@@ -42,6 +45,7 @@ describe 'Evento Recurrente' do
     inicio = DateTime.now
     fin = inicio
     frecuencia = double('Frecuencia')
+    allow(frecuencia).to receive(:frecuencia).and_return(1)
     fin_recurrencia = DateTime.now + 30
     evento_recurrente = EventoRecurrente.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
     expect(evento_recurrente.fin_recurrencia).to eq fin_recurrencia
@@ -53,9 +57,11 @@ describe 'Evento Recurrente' do
     inicio = DateTime.now
     fin = inicio
     frecuencia = double('Frecuencia')
-    fin_recurrencia = DateTime.now + 30
+    allow(frecuencia).to receive(:frecuencia).and_return(1)
+    fin_recurrencia = DateTime.now + 2
     evento_recurrente = EventoRecurrente.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
-    expect(evento_recurrente.obtener_intervalo).to eq nil
+    rango_esperado = [inicio..fin, (inicio + 1)..(fin + 1), (inicio + 2)..(fin + 2)]
+    expect(evento_recurrente.obtener_intervalo).to eq rango_esperado
   end
 
   it 'Error al modificar inicio y que fin recurrencia sea menor a inicio' do
@@ -64,6 +70,7 @@ describe 'Evento Recurrente' do
     inicio = DateTime.now
     fin = inicio
     frecuencia = double('Frecuencia')
+    allow(frecuencia).to receive(:frecuencia).and_return(1)
     fin_recurrencia = DateTime.now
     evento = EventoRecurrente.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
     expect do
@@ -77,6 +84,7 @@ describe 'Evento Recurrente' do
     inicio = DateTime.now
     fin = inicio
     frecuencia = double('Frecuencia')
+    allow(frecuencia).to receive(:frecuencia).and_return(1)
     fin_recurrencia = DateTime.now
     evento = EventoRecurrente.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
     expect do
@@ -90,6 +98,7 @@ describe 'Evento Recurrente' do
     inicio = DateTime.now
     fin = inicio
     frecuencia = double('Frecuencia')
+    allow(frecuencia).to receive(:frecuencia).and_return(1)
     fin_recurrencia = DateTime.now
     evento = EventoRecurrente.new(id, nombre, inicio, fin, frecuencia, fin_recurrencia)
     expect do

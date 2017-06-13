@@ -24,13 +24,15 @@ class EventoRecurrente < Evento
   end
 
   def obtener_intervalo
-    super
-    # @TODO
-    # Aca se debe devolver el listado de intervalos
-    # que componen al evento recurrente hasta llegar
-    # a su fecha fin siguiendo la frecuencia
-    # Aca hay que usar el polimorfismo de la frecuencia
-    # @frecuencia.obtener_frecuencia ..
+    intervalos = []
+    inicio = @inicio
+    fin = @fin
+    while inicio <= @fin_recurrencia do
+      intervalos << (inicio..fin)
+      inicio += @frecuencia.frecuencia
+      fin += @frecuencia.frecuencia
+    end
+    intervalos
   end
 
   private
