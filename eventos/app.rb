@@ -106,7 +106,7 @@ post '/eventos' do
 end
 
 # @TODO
-# Agregar el la logica del caso de modificar la frecuencia o fin de recurrencia
+# Fañta agregar la logica del caso de modificar la frecuencia o fin de recurrencia
 put '/eventos' do
   begin
     request.body.rewind
