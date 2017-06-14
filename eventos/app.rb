@@ -10,6 +10,7 @@ require_relative 'model/frecuencia_diaria'
 require_relative 'model/frecuencia_semanal'
 require_relative 'model/frecuencia_mensual'
 require_relative 'model/frecuencia_anual'
+require_relative 'model/validador_unicidad_evento'
 
 
 # @TODO GENERAL
@@ -98,7 +99,7 @@ post '/eventos' do
         fin_evento
       )
     end
-    ValidadorUnicidadEvento.comprobar(repositorio_calendarios, evento.id)
+    ValidadorUnicidadEvento.validar(repositorio_calendarios, evento.id)
     calendario.almacenar_evento(evento)
     ArchivadorRepositorio.guardar(repositorio_calendarios)
   rescue  ExcepcionCalendarioInexistente,
