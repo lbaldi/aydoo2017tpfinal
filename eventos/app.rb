@@ -97,6 +97,7 @@ post '/eventos' do
         fin_evento
       )
     end
+    ValidadorIdDeEventos.comprobar(repositorio_calendarios, evento.id)
     calendario.almacenar_evento(evento)
     repositorio_calendarios.actualizar
   rescue  ExcepcionCalendarioInexistente,
@@ -104,6 +105,7 @@ post '/eventos' do
           ExcepcionIntervaloMaximo,
           ExcepcionUnicidadEvento,
           ExcepcionSolapamientoEvento
+          ExcepcionUnicidadGlobalEvento
     status 400
   end
 end

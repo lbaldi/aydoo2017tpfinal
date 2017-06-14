@@ -17,8 +17,6 @@ class Calendario
   end
 
   def almacenar_evento(evento)
-    # @TODO
-    # - Pensar como hacemos la validacion de id global
     identificacion = evento.id
     comprobar_unicidad_evento(identificacion)
     comprobar_solapamiento_evento(evento)

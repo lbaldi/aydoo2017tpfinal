@@ -1,7 +1,5 @@
 require 'rspec'
 require_relative '../model/repositorio_calendarios'
-require_relative '../model/calendario'
-require_relative '../model/../model/gestor_archivo_calendarios'
 
 describe 'Repositorio Calendarios' do
   it 'Debe poder almacenar un calendario' do
@@ -77,35 +75,5 @@ describe 'Repositorio Calendarios' do
     expect do
       repositorio.eliminar_calendario('inexistente')
     end.to raise_error(ExcepcionCalendarioInexistente)
-  end
-
-  # Luego de cada caso de prueba, se elimina la lista de calendarios para evitar hacerlo manualmente
-  it 'Deberia poder actualizar la lista de calendarios del gestor' do
-    repositorio = RepositorioCalendarios.new
-    nombre_calendario = 'Calendario 1'
-    calendario = Calendario.new(nombre_calendario)
-    repositorio.almacenar_calendario(calendario)
-    repositorio.actualizar
-    GestorArchivoCalendarios.eliminar_calendarios_en_disco
-  end
-
-  it 'Deberia poder obtener la lista de calendarios del gestor de archivo de calendarios' do
-    repositorio = RepositorioCalendarios.new
-    nombre_calendario = 'Calendario 1'
-    calendario = Calendario.new(nombre_calendario)
-    repositorio.almacenar_calendario(calendario)
-    repositorio.actualizar
-    repositorio.obtener_lista_calendarios
-    GestorArchivoCalendarios.eliminar_calendarios_en_disco
-  end
-
-  it 'El calendario actualizado en disco invocando al gestor debe coincidir con el que se requirio actualizar' do
-    repositorio = RepositorioCalendarios.new
-    nombre_calendario = 'Calendario 1'
-    calendario = Calendario.new(nombre_calendario)
-    repositorio.almacenar_calendario(calendario)
-    repositorio.actualizar
-    expect(repositorio.calendarios[calendario.nombre]).to eq repositorio.obtener_lista_calendarios[calendario.nombre]
-    GestorArchivoCalendarios.eliminar_calendarios_en_disco
   end
 end

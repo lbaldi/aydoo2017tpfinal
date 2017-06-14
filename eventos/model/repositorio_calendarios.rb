@@ -1,14 +1,13 @@
 require_relative '../model/calendario'
-require_relative '../model/gestor_archivo_calendarios'
 require_relative '../model/excepcion_unicidad_calendario'
 require_relative '../model/excepcion_calendario_inexistente'
 
 # Repositorio de calendarios
 class RepositorioCalendarios
-  attr_reader :calendarios
+  attr_accessor :calendarios
 
   def initialize
-    @calendarios = obtener_lista_calendarios
+    @calendarios = {}
   end
 
   def almacenar_calendario(calendario)
@@ -27,18 +26,6 @@ class RepositorioCalendarios
     unless @calendarios.delete(identificacion)
       raise ExcepcionCalendarioInexistente
     end
-  end
-
-  def obtener_lista_calendarios
-    GestorArchivoCalendarios.leer_calendarios_en_disco || {}
-  end
-
-  def self.obtener_lista_calendarios
-    GestorArchivoCalendarios.leer_calendarios_en_disco || {}
-  end
-
-  def actualizar
-    GestorArchivoCalendarios.guardar_calendarios_en_disco(calendarios)
   end
 
   private
