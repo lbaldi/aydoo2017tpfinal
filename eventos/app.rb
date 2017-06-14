@@ -106,7 +106,7 @@ post '/eventos' do
           ExcepcionIntervaloErroneo,
           ExcepcionIntervaloMaximo,
           ExcepcionUnicidadEvento,
-          ExcepcionSolapamientoEvento
+          ExcepcionSolapamientoEvento,
           ExcepcionUnicidadGlobalEvento
     status 400
   end
