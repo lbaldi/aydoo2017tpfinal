@@ -105,8 +105,6 @@ post '/eventos' do
   end
 end
 
-# @TODO
-# Fañta agregar la logica del caso de modificar la frecuencia o fin de recurrencia
 put '/eventos' do
   begin
     request.body.rewind
@@ -124,25 +122,24 @@ put '/eventos' do
     nombre_original = evento_original.nombre
     inicio_original = evento_original.inicio
     fin_original = evento_original.fin
-    #frecuencia_original = evento_original.frecuencia
-    #fin_recurrencia_original = evento_original.fin_recurrencia
+    frecuencia_original = evento_original.instance_variable_defined?(:@frecuencia) && evento_original.frecuencia
+    fin_recurrencia_original = evento_original.instance_variable_defined?(:@fin_recurrencia) && evento_original.fin_recurrencia
 
     nombre_evento = body.key?('nombre') ? body['nombre'] : nombre_original
     inicio_evento = body.key?('inicio') ? DateTime.parse(body['inicio']) : inicio_original
     fin_evento = body.key?('fin') ? DateTime.parse(body['fin']) : fin_original
 
-    if body.key?('recurrencia')
-      frecuencia_evento = body['recurrencia']['frecuencia']
-      frecuencia = frecuencias[frecuencia_evento]
-      fin_recurrencia_evento = DateTime.parse(body['recurrencia']['fin'])
+    frecuencia_evento = body.key?('recurrencia') && body['recurrencia'].key?('frecuencia') ? frecuencias[body['recurrencia']['frecuencia']] : frecuencia_original
+    fin_recurrencia = body.key?('recurrencia') && body['recurrencia'].key?('fin') ? DateTime.parse(body['recurrencia']['fin']) : fin_recurrencia_original
 
+    if frecuencia_evento && fin_recurrencia
       evento_reemplazante = EventoRecurrente.new(
         id_evento,
         nombre_evento,
         inicio_evento,
         fin_evento,
-        frecuencia,
-        fin_recurrencia_evento
+        frecuencia_evento,
+        fin_recurrencia
       )
     else
       evento_reemplazante = Evento.new(
@@ -153,8 +150,14 @@ put '/eventos' do
       )
     end
     repositorio_evento.eliminar_evento(id_evento)
-    repositorio_evento.almacenar_evento(evento_reemplazante)
+    begin
+      repositorio_evento.almacenar_evento(evento_reemplazante)
+    rescue
+      repositorio_evento.almacenar_evento(evento_original)
+      status 400
+    end
     ArchivadorRepositorio.guardar(repositorio_calendarios)
+
   rescue  ExcepcionCalendarioInexistente,
           ExcepcionEventoInexistente,
           ExcepcionIntervaloErroneo,
