@@ -115,34 +115,55 @@ post '/eventos' do
   end
 end
 
+# @TODO
+# Agregar el la logica del caso de modificar la frecuencia o fin de recurrencia
 put '/eventos' do
-  # @TODO
-  # - Ver que tambien puede venir en vez de eventos
-  # eventos recurrentes. Para ello pense crear una
-  # nueva clase.
-  # - OJOOOOO!!! ACA VAN A ENVIAR ID DIRECTO
-  # NO VAN A ENVIAR EL CALENDARIO SIEMPRE.
   begin
     request.body.rewind
     body = JSON.parse request.body.read
-    nombre_calendario = body['calendario']
     id_evento = body['id']
-    calendario = repositorio_calendarios.obtener_calendario(nombre_calendario)
-    evento_original = calendario.obtener_evento(id_evento)
+
+    repositorio_evento = nil
+    repositorio_calendarios.calendarios.values.each do |calendario|
+      repositorio_evento = calendario if calendario.eventos.key?(id_evento)
+      repositorio_evento && break
+    end
+    raise ExcepcionEventoInexistente unless repositorio_evento
+
+    evento_original = repositorio_evento.obtener_evento(id_evento)
     nombre_original = evento_original.nombre
     inicio_original = evento_original.inicio
     fin_original = evento_original.fin
+    #frecuencia_original = evento_original.frecuencia
+    #fin_recurrencia_original = evento_original.fin_recurrencia
+
     nombre_evento = body.key?('nombre') ? body['nombre'] : nombre_original
     inicio_evento = body.key?('inicio') ? DateTime.parse(body['inicio']) : inicio_original
     fin_evento = body.key?('fin') ? DateTime.parse(body['fin']) : fin_original
-    evento_reemplazante = Evento.new(
-      id_evento,
-      nombre_evento,
-      inicio_evento,
-      fin_evento
-    )
-    calendario.eliminar_evento(evento_original.id)
-    calendario.almacenar_evento(evento_reemplazante)
+
+    if body.key?('recurrencia')
+      frecuencia_evento = body['recurrencia']['frecuencia']
+      frecuencia = frecuencias[frecuencia_evento]
+      fin_recurrencia_evento = DateTime.parse(body['recurrencia']['fin'])
+
+      evento_reemplazante = EventoRecurrente.new(
+        id_evento,
+        nombre_evento,
+        inicio_evento,
+        fin_evento,
+        frecuencia,
+        fin_recurrencia_evento
+      )
+    else
+      evento_reemplazante = Evento.new(
+          id_evento,
+          nombre_evento,
+          inicio_evento,
+          fin_evento
+      )
+    end
+    repositorio_evento.eliminar_evento(id_evento)
+    repositorio_evento.almacenar_evento(evento_reemplazante)
     ArchivadorRepositorio.guardar(repositorio_calendarios)
   rescue  ExcepcionCalendarioInexistente,
           ExcepcionEventoInexistente,
