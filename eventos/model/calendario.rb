@@ -10,6 +10,12 @@ class Calendario
   attr_reader :nombre
   attr_reader :eventos
 
+  def to_h
+    {
+      "nombre" => @nombre
+    }
+  end
+
   def initialize(nombre)
     validar_nombre(nombre)
     @nombre = nombre

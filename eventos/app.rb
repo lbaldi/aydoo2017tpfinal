@@ -39,6 +39,7 @@ post '/calendarios' do
     calendario = Calendario.new(nombre_calendario)
     repositorio_calendarios.almacenar_calendario(calendario)
     ArchivadorRepositorio.guardar(repositorio_calendarios)
+    JSON.pretty_generate(calendario.to_h)
   rescue  ExcepcionUnicidadCalendario,
           ExcepcionNombreCalendario
     status 400
@@ -56,14 +57,16 @@ delete '/calendarios/:nombre' do
 end
 
 get '/calendarios' do
-  puts repositorio_calendarios.calendarios
+  salida = []
+  repositorio_calendarios.calendarios.values.each {|calendario| salida << calendario.to_h}
+  JSON.pretty_generate(salida)
 end
 
 get '/calendarios/:nombre' do
   begin
     nombre_calendario = params[:nombre]
     calendario = repositorio_calendarios.obtener_calendario(nombre_calendario)
-    puts calendario
+    JSON.pretty_generate(calendario.to_h)
   rescue ExcepcionCalendarioInexistente
     status 400
   end
@@ -180,7 +183,9 @@ get '/eventos' do
         eventos << evento
       end
     end
-    puts eventos
+    salida = []
+    eventos.each {|evento| salida << evento.to_h}
+    JSON.pretty_generate(salida)
   rescue ExcepcionCalendarioInexistente
     status 400
   end
@@ -195,5 +200,5 @@ get '/eventos/:id' do
   end
   raise ExcepcionEventoInexistente unless repositorio_evento
   evento = repositorio_evento.obtener_evento(id_evento)
-  puts evento
+  JSON.pretty_generate(evento.to_h)
 end

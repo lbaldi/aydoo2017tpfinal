@@ -8,6 +8,15 @@ class Evento
   attr_reader :id
   attr_accessor :nombre, :inicio, :fin
 
+  def to_h
+    {
+      'id' => @id,
+      'nombre' => @nombre,
+      'inicio' => @inicio,
+      'fin' => @fin
+    }
+  end
+
   def initialize(id, nombre, inicio, fin)
     validar_intervalo(inicio, fin)
     @id = id

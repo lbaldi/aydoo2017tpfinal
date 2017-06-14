@@ -5,4 +5,8 @@ class FrecuenciaSemanal < Frecuencia
   def initialize
     @frecuencia = 7
   end
+
+  def to_s
+    'Frecuencia Semanal'
+  end
 end
