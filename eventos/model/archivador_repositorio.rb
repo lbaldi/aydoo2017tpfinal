@@ -1,4 +1,4 @@
-NOMBRE_ARCHIVO = 'repositorio'.freeze
+NOMBRE_ARCHIVO = 'repositorio.txt'.freeze
 
 # Encargada de la persistencia del repositorio
 class ArchivadorRepositorio

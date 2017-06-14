@@ -1,5 +1,7 @@
 require 'json'
 require 'sinatra'
+
+require_relative 'model/archivador_repositorio'
 require_relative 'model/repositorio_calendarios'
 require_relative 'model/calendario'
 require_relative 'model/evento'
@@ -17,7 +19,6 @@ require_relative 'model/frecuencia_anual'
 # - Limpiar y emprolijar un poco este archivo
 
 # @TODO
-# - Ver si el metodo repositorio_calendarios.actualizar se deberia llamar desde aca
 # - Ver los status a devolver para las funciones que crean recursos (200 o 201?)
 
 frecuencias = {
@@ -27,7 +28,7 @@ frecuencias = {
   "anual" => FrecuenciaAnual.new
 }
 
-repositorio_calendarios = RepositorioCalendarios.new
+repositorio_calendarios = ArchivadorRepositorio.cargar || RepositorioCalendarios.new
 
 post '/calendarios' do
   begin
@@ -36,7 +37,7 @@ post '/calendarios' do
     nombre_calendario = body['nombre']
     calendario = Calendario.new(nombre_calendario)
     repositorio_calendarios.almacenar_calendario(calendario)
-    repositorio_calendarios.actualizar
+    ArchivadorRepositorio.guardar(repositorio_calendarios)
   rescue  ExcepcionUnicidadCalendario,
           ExcepcionNombreCalendario
     status 400
@@ -47,7 +48,7 @@ delete '/calendarios/:nombre' do
   begin
     nombre_calendario = params[:nombre]
     repositorio_calendarios.eliminar_calendario(nombre_calendario)
-    repositorio_calendarios.actualizar
+    ArchivadorRepositorio.guardar(repositorio_calendarios)
   rescue ExcepcionCalendarioInexistente
     status 400
   end
@@ -99,7 +100,7 @@ post '/eventos' do
     end
     ValidadorUnicidadEvento.comprobar(repositorio_calendarios, evento.id)
     calendario.almacenar_evento(evento)
-    repositorio_calendarios.actualizar
+    ArchivadorRepositorio.guardar(repositorio_calendarios)
   rescue  ExcepcionCalendarioInexistente,
           ExcepcionIntervaloErroneo,
           ExcepcionIntervaloMaximo,
@@ -138,7 +139,7 @@ put '/eventos' do
     )
     calendario.eliminar_evento(evento_original.id)
     calendario.almacenar_evento(evento_reemplazante)
-    repositorio_calendarios.actualizar
+    ArchivadorRepositorio.guardar(repositorio_calendarios)
   rescue  ExcepcionCalendarioInexistente,
           ExcepcionEventoInexistente,
           ExcepcionIntervaloErroneo,
@@ -157,7 +158,7 @@ delete '/eventos/:id' do
   end
   begin
     repositorio_evento.eliminar_evento(id_evento)
-    repositorio_calendarios.actualizar
+    ArchivadorRepositorio.guardar(repositorio_calendarios)
   rescue
     status 400
   end
