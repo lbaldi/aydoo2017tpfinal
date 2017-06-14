@@ -97,7 +97,7 @@ post '/eventos' do
         fin_evento
       )
     end
-    ValidadorIdDeEventos.comprobar(repositorio_calendarios, evento.id)
+    ValidadorUnicidadEvento.comprobar(repositorio_calendarios, evento.id)
     calendario.almacenar_evento(evento)
     repositorio_calendarios.actualizar
   rescue  ExcepcionCalendarioInexistente,
