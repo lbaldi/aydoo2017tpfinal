@@ -12,16 +12,6 @@ require_relative 'model/frecuencia_mensual'
 require_relative 'model/frecuencia_anual'
 require_relative 'model/validador_unicidad_evento'
 
-
-# @TODO GENERAL
-# - Hay que armar clases para la impresion de datos
-# - HAY QUE ELIMINAR LOS PUTS y hacer returns
-# - Hay que ver si los codigos de errores estan ok
-# - Limpiar y emprolijar un poco este archivo
-
-# @TODO
-# - Ver los status a devolver para las funciones que crean recursos (200 o 201?)
-
 frecuencias = {
   "diaria" => FrecuenciaDiaria.new,
   "semanal" => FrecuenciaSemanal.new,
@@ -52,7 +42,7 @@ delete '/calendarios/:nombre' do
     repositorio_calendarios.eliminar_calendario(nombre_calendario)
     ArchivadorRepositorio.guardar(repositorio_calendarios)
   rescue ExcepcionCalendarioInexistente
-    status 400
+    status 404
   end
 end
 
@@ -68,7 +58,7 @@ get '/calendarios/:nombre' do
     calendario = repositorio_calendarios.obtener_calendario(nombre_calendario)
     JSON.pretty_generate(calendario.to_h)
   rescue ExcepcionCalendarioInexistente
-    status 400
+    status 404
   end
 end
 
@@ -164,7 +154,7 @@ delete '/eventos/:id' do
     repositorio_evento.eliminar_evento(id_evento)
     ArchivadorRepositorio.guardar(repositorio_calendarios)
   rescue
-    status 400
+    status 404
   end
 end
 
@@ -192,13 +182,17 @@ get '/eventos' do
 end
 
 get '/eventos/:id' do
-  id_evento = params[:id]
-  repositorio_evento = nil
-  repositorio_calendarios.calendarios.values.each do |calendario|
-    repositorio_evento = calendario if calendario.eventos.key?(id_evento)
-    repositorio_evento && break
+  begin
+    id_evento = params[:id]
+    repositorio_evento = nil
+    repositorio_calendarios.calendarios.values.each do |calendario|
+      repositorio_evento = calendario if calendario.eventos.key?(id_evento)
+      repositorio_evento && break
+    end
+    raise ExcepcionEventoInexistente unless repositorio_evento
+    evento = repositorio_evento.obtener_evento(id_evento)
+    JSON.pretty_generate(evento.to_h)
+  rescue ExcepcionEventoInexistente
+    status 404
   end
-  raise ExcepcionEventoInexistente unless repositorio_evento
-  evento = repositorio_evento.obtener_evento(id_evento)
-  JSON.pretty_generate(evento.to_h)
 end
