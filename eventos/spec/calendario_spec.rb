@@ -23,7 +23,7 @@ describe 'Calendario' do
     nombre_calendario = 'Nombre Calendario'
     nuevo_nombre_calendario = 'Nuevo Nombre'
     calendario = Calendario.new(nombre_calendario)
-    expect { calendario.nombre = nuevo_nombre_calendario }.to raise_error
+    expect {calendario.nombre = nuevo_nombre_calendario}.to raise_error
   end
 
   it 'Debe poder almacenar un evento' do

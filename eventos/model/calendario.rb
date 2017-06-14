@@ -48,8 +48,8 @@ class Calendario
     end
     intervalos.push(nuevo_evento.obtener_intervalo)
     intervalos && intervalos.flatten!
-    intervalos = intervalos.sort_by { |intervalo| intervalo.min }
-    while intervalos.each_cons(2).any? { |a, b|
+    intervalos = intervalos.sort_by {|intervalo| intervalo.min}
+    while intervalos.each_cons(2).any? {|a, b|
       min_interseccion = [a.min, b.min].max
       max_interseccion = [a.max, b.max].min
       interseccion = min_interseccion <= max_interseccion

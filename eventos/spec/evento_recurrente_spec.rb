@@ -2,7 +2,6 @@ require 'rspec'
 require_relative '../model/evento_recurrente'
 
 describe 'Evento Recurrente' do
-
   it 'Se debe crear un evento recurrente a partir de un id, nombre, inicio, fin, frecuencia y fin frecuencia' do
     id = 'id_1'
     nombre = 'Evento 1'

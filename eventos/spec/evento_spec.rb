@@ -25,7 +25,7 @@ describe 'Evento' do
     inicio = DateTime.now
     fin = inicio
     evento = Evento.new(id, nombre, inicio, fin)
-    expect { evento.id = 'nuevo_id' }.to raise_error
+    expect {evento.id = 'nuevo_id'}.to raise_error
   end
 
   it 'Deberia poder obtener el nombre' do
