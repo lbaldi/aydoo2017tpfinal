@@ -1,6 +1,7 @@
 require_relative '../model/excepcion_nombre_calendario'
 require_relative '../model/excepcion_unicidad_evento'
 require_relative '../model/excepcion_evento_inexistente'
+require_relative '../model/excepcion_solapamiento_evento'
 
 NOMBRE_VACIO = ''.freeze
 
@@ -8,6 +9,12 @@ NOMBRE_VACIO = ''.freeze
 class Calendario
   attr_reader :nombre
   attr_reader :eventos
+
+  def to_h
+    {
+      "nombre" => @nombre
+    }
+  end
 
   def initialize(nombre)
     validar_nombre(nombre)
@@ -40,13 +47,20 @@ class Calendario
     raise ExcepcionUnicidadEvento if @eventos.key?(identificacion)
   end
 
-  def comprobar_solapamiento_evento(evento)
-    # @TODO
-    # - Obtener lapsos cubiertos por la lista de eventos
-    #   y comparar a los que ocuparia este evento
-    #   al evento siempre solicitar los lapsos ya sea
-    #   recurrente o no.
-    #   Para esto va a falta crear la clase de evento
-    #   recursivo, excepcion de solapamiento.
+  def comprobar_solapamiento_evento(nuevo_evento)
+    intervalos = []
+    @eventos.values.each do |evento|
+      intervalos.push(evento.obtener_intervalo)
+    end
+    intervalos.push(nuevo_evento.obtener_intervalo)
+    intervalos && intervalos.flatten!
+    intervalos = intervalos.sort_by {|intervalo| intervalo.min}
+    while intervalos.each_cons(2).any? {|a, b|
+      min_interseccion = [a.min, b.min].max
+      max_interseccion = [a.max, b.max].min
+      interseccion = min_interseccion <= max_interseccion
+      interseccion && raise(ExcepcionSolapamientoEvento)
+    }
+    end
   end
 end

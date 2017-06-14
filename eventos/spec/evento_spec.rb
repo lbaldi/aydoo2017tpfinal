@@ -2,7 +2,7 @@ require 'rspec'
 require_relative '../model/evento'
 
 describe 'Evento' do
-  it 'Se debe crear a partir de un id, nombre, inicio y fin' do
+  it 'Se debe crear un evento a partir de un id, nombre, inicio y fin' do
     id = 'id_1'
     nombre = 'Evento 1'
     inicio = DateTime.now
@@ -25,7 +25,7 @@ describe 'Evento' do
     inicio = DateTime.now
     fin = inicio
     evento = Evento.new(id, nombre, inicio, fin)
-    expect { evento.id = 'nuevo_id' }.to raise_error
+    expect {evento.id = 'nuevo_id'}.to raise_error
   end
 
   it 'Deberia poder obtener el nombre' do
@@ -53,6 +53,15 @@ describe 'Evento' do
     fin = inicio
     evento = Evento.new(id, nombre, inicio, fin)
     expect(evento.fin).to eq fin
+  end
+
+  it 'Deberia poder obtener el intervalo del evento' do
+    id = 'id_1'
+    nombre = 'Evento 1'
+    inicio = DateTime.now
+    fin = inicio
+    evento = Evento.new(id, nombre, inicio, fin)
+    expect(evento.obtener_intervalo).to eq inicio..fin
   end
 
   it 'Deberia poder modificar su nombre' do

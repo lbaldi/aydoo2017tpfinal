@@ -1,13 +1,24 @@
 require_relative '../model/regla_intervalo_evento'
 require_relative '../model/excepcion_intervalo_erroneo'
 
+CONVERSOR_HORAS = (1 / 24.0)
+
 # Representa un evento. Limitado por un inicio y un fin
 class Evento
   attr_reader :id
   attr_accessor :nombre, :inicio, :fin
 
+  def to_h
+    {
+      'id' => @id,
+      'nombre' => @nombre,
+      'inicio' => @inicio,
+      'fin' => @fin
+    }
+  end
+
   def initialize(id, nombre, inicio, fin)
-    validar_lapso(inicio, fin)
+    validar_intervalo(inicio, fin)
     @id = id
     @nombre = nombre
     @inicio = inicio
@@ -15,25 +26,28 @@ class Evento
   end
 
   def inicio=(value)
-    validar_lapso(value, @fin)
+    validar_intervalo(value, @fin)
     @inicio = value
   end
 
   def fin=(value)
-    validar_lapso(@inicio, value)
+    validar_intervalo(@inicio, value)
     @fin = value
+  end
+
+  def obtener_intervalo
+    @inicio..@fin
   end
 
   private
 
-  def validar_lapso(inicio, fin)
+  def validar_intervalo(inicio, fin)
     raise ExcepcionIntervaloErroneo if fin < inicio
     intervalo_en_horas = convertir_a_horas(fin - inicio)
     ReglaIntervaloEvento.validar_horas(intervalo_en_horas)
   end
 
   def convertir_a_horas(intervalo)
-    conversor_a_horas = (1 / 24.0)
-    intervalo / conversor_a_horas
+    intervalo / CONVERSOR_HORAS
   end
 end
